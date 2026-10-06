@@ -24,6 +24,9 @@ jobs:
         with:
           global-json-file: global.json
 
+      - name: Install wasm-tools
+        run: dotnet workload install wasm-tools
+
       - name: Publish
         env:
           LOG_URL: ${{ secrets.LOG_URL }}

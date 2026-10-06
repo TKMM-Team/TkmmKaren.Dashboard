@@ -10,7 +10,7 @@ internal static class LogAccess
         Timeout = TimeSpan.FromSeconds(15)
     };
 
-    public const string LogUrl = "__LOG_URL__";
+    public const string LogUrl = "https://repo.tkmm.org/.karen-logs/latest.log";
 
     public static void SignIn(string username, string password)
     {
