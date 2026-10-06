@@ -10,7 +10,7 @@ internal static class LogAccess
         Timeout = TimeSpan.FromSeconds(15)
     };
 
-    public static string LogUrl { get; set; } = BuildConstants.LogUrl;
+    public const string LogUrl = "__LOG_URL__";
 
     public static void SignIn(string username, string password)
     {
