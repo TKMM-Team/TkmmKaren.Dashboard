@@ -1,0 +1,18 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="TkmmKaren.Dashboard.App"
+             RequestedThemeVariant="Dark">
+    <Application.Resources>
+        <FontFamily x:Key="UbuntuMono">avares://TkmmKaren.Dashboard/Assets/Fonts/UbuntuMono/#Ubuntu Mono</FontFamily>
+    </Application.Resources>
+    <Application.Styles>
+        <FluentTheme>
+            <FluentTheme.Palettes>
+                <ColorPaletteResources x:Key="Dark" RegionColor="#FF1F1F1F" />
+            </FluentTheme.Palettes>
+        </FluentTheme>
+        <Style Selector=":is(UserControl)">
+            <Setter Property="Background" Value="#1F1F1F" />
+        </Style>
+    </Application.Styles>
+</Application>
