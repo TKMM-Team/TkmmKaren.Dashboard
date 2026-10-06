@@ -30,9 +30,7 @@ jobs:
       - name: Publish
         env:
           LOG_URL: ${{ secrets.LOG_URL }}
-        run: |
-          sed -i "s|__LOG_URL__|${LOG_URL}|" src/App/LogAccess.cs
-          dotnet publish src/App/TkmmKaren.Dashboard.csproj -c Release -o ${{ runner.temp }}/publish
+        run: dotnet publish src/App/TkmmKaren.Dashboard.csproj -c Release -o ${{ runner.temp }}/publish
 
       - name: Locate site
         id: site
