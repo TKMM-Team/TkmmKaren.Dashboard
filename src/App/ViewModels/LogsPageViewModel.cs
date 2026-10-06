@@ -74,6 +74,10 @@ public partial class LogsPageViewModel : ObservableObject
     {
         using var response = await LogAccess.GetAsync(cancellationToken);
         if (LogAccess.IsUnauthorized(response.StatusCode)) {
+            if (LogAccess.HasCredentials) {
+                return true;
+            }
+
             PageRouter.ShowCredentials();
             return false;
         }
