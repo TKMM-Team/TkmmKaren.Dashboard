@@ -27,8 +27,14 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           global-json-file: global.json
-          cache: true
-          cache-dependency-path: src/App/packages.lock.json
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.nuget/packages
+            src/App/packages.lock.json
+          key: nuget-${{ runner.os }}-${{ hashFiles('Directory.Packages.props', 'src/App/TkmmKaren.Dashboard.csproj', 'global.json', 'nuget.config') }}
 
       - name: Cache wasm-tools
         id: wasm-tools
@@ -64,7 +70,6 @@ jobs:
         env:
           LOG_URL: ${{ secrets.LOG_URL }}
         run: |
-          rm -rf ~/.nuget/packages/microsoft.net.sdk.webassembly.pack ~/.nuget/packages/microsoft.net.illink.tasks
           sed -i "s|__LOG_URL__|${LOG_URL}|" src/App/LogAccess.cs
           dotnet publish src/App/TkmmKaren.Dashboard.csproj -c Release -o ${{ runner.temp }}/publish
 
