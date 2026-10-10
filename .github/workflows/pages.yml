@@ -28,6 +28,7 @@ jobs:
         with:
           global-json-file: global.json
           cache: true
+          cache-dependency-path: src/App/packages.lock.json
 
       - name: Cache wasm-tools
         id: wasm-tools
