@@ -23,7 +23,6 @@ jobs:
           fetch-depth: 0
 
       - name: Setup .NET
-        id: dotnet
         uses: actions/setup-dotnet@v4
         with:
           global-json-file: global.json
@@ -36,18 +35,7 @@ jobs:
             src/App/packages.lock.json
           key: nuget-${{ runner.os }}-${{ hashFiles('Directory.Packages.props', 'src/App/TkmmKaren.Dashboard.csproj', 'global.json', 'nuget.config') }}
 
-      - name: Cache wasm-tools
-        id: wasm-tools
-        uses: actions/cache@v4
-        with:
-          path: |
-            ${{ env.DOTNET_ROOT }}/sdk-manifests
-            ${{ env.DOTNET_ROOT }}/packs
-            ${{ env.DOTNET_ROOT }}/metadata
-          key: wasm-tools-${{ steps.dotnet.outputs.dotnet-version }}
-
       - name: Install wasm-tools
-        if: steps.wasm-tools.outputs.cache-hit != 'true'
         run: dotnet workload install wasm-tools
 
       - name: Restore previous build
