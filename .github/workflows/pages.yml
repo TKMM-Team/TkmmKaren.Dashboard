@@ -6,6 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
+  actions: write
   contents: write
 
 concurrency:
@@ -18,14 +19,45 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup .NET
+        id: dotnet
         uses: actions/setup-dotnet@v4
         with:
           global-json-file: global.json
+          cache: true
+
+      - name: Cache wasm-tools
+        id: wasm-tools
+        uses: actions/cache@v4
+        with:
+          path: |
+            ${{ env.DOTNET_ROOT }}/sdk-manifests
+            ${{ env.DOTNET_ROOT }}/packs
+            ${{ env.DOTNET_ROOT }}/metadata
+          key: wasm-tools-${{ steps.dotnet.outputs.dotnet-version }}
 
       - name: Install wasm-tools
+        if: steps.wasm-tools.outputs.cache-hit != 'true'
         run: dotnet workload install wasm-tools
+
+      - name: Restore previous build
+        uses: actions/cache@v4
+        with:
+          path: src/App/obj
+          key: publish-obj-${{ github.run_id }}
+          restore-keys: publish-obj-
+
+      - name: Keep incremental timestamps
+        run: |
+          git ls-files -z | while IFS= read -r -d '' file; do
+            stamp=$(git log -1 --format=%cI -- "$file")
+            if [ -n "$stamp" ]; then
+              touch -d "$stamp" -- "$file"
+            fi
+          done
 
       - name: Publish
         env:
