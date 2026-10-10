@@ -64,6 +64,7 @@ jobs:
         env:
           LOG_URL: ${{ secrets.LOG_URL }}
         run: |
+          rm -rf ~/.nuget/packages/microsoft.net.sdk.webassembly.pack ~/.nuget/packages/microsoft.net.illink.tasks
           sed -i "s|__LOG_URL__|${LOG_URL}|" src/App/LogAccess.cs
           dotnet publish src/App/TkmmKaren.Dashboard.csproj -c Release -o ${{ runner.temp }}/publish
 
